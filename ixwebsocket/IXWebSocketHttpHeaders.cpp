@@ -17,14 +17,14 @@ namespace ix
     {
         WebSocketHttpHeaders headers;
 
-        char line[1024];
+        char line[8192];
         int i;
 
         while (true)
         {
             int colon = 0;
 
-            for (i = 0; i < 2 || (i < 1023 && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i)
+            for (i = 0; i < 2 || (i < line.size() && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i)
             {
                 if (!socket->readByte(line + i, isCancellationRequested))
                 {
