@@ -24,7 +24,7 @@ namespace ix
         {
             int colon = 0;
 
-            for (i = 0; i < 2 || (i < line.size() && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i)
+            for (i = 0; i < 2 || (i < sizeof(line)-1 && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i)
             {
                 if (!socket->readByte(line + i, isCancellationRequested))
                 {
