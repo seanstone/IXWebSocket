@@ -26,6 +26,7 @@
 
 #ifdef _WIN32
 // For manipulating the certificate store
+#include <windows.h>
 #include <wincrypt.h>
 #endif
 
@@ -49,7 +50,7 @@ namespace
         X509_STORE* opensslStore = SSL_CTX_get_cert_store(ssl);
 
         int certificateCount = 0;
-        while (certificateIterator = CertEnumCertificatesInStore(systemStore, certificateIterator))
+        while ((certificateIterator = CertEnumCertificatesInStore(systemStore, certificateIterator)))
         {
             X509* x509 = d2i_X509(NULL,
                                   (const unsigned char**) &certificateIterator->pbCertEncoded,
@@ -293,10 +294,16 @@ namespace ix
      */
     bool SocketOpenSSL::checkHost(const std::string& host, const char* pattern)
     {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+        return true;
+#else
+
 #ifdef _WIN32
         return PathMatchSpecA(host.c_str(), pattern);
 #else
         return fnmatch(pattern, host.c_str(), 0) != FNM_NOMATCH;
+#endif
+
 #endif
     }
 
