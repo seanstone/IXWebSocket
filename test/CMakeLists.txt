@@ -25,6 +25,8 @@ set (TEST_TARGET_NAMES
   IXStrCaseCompareTest
   IXExponentialBackoffTest
   IXWebSocketCloseTest
+  IXWebSocketHostTest
+  IXWebSocketIPv6Test
 )
 
 # Some unittest don't work on windows yet

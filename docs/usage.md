@@ -37,7 +37,8 @@ webSocket.setUrl(url);
 // to make sure that load balancers do not kill an idle connection.
 webSocket.setPingInterval(45);
 
-// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+// Per message deflate connection is not enabled by default. You can tweak its parameters, enable or disable it with
+webSocket.enablePerMessageDeflate();
 webSocket.disablePerMessageDeflate();
 
 // Setup a callback to be fired when a message or an event (open, close, error) is received
@@ -443,6 +444,17 @@ server.start();
 // Block until server.stop() is called.
 server.wait();
 
+```
+
+### Heartbeat
+
+You can configure an optional heartbeat / keep-alive for the WebSocket server. The heartbeat interval can be adjusted or disabled when constructing the `WebSocketServer`. Setting the interval to `-1` disables the heartbeat feature; this is the default setting. The parameter you set will be applied to every `WebSocket` object that the server creates.
+
+To enable a 45 second heartbeat on a `WebSocketServer`:
+
+```cpp
+int pingIntervalSeconds = 45;
+ix::WebSocketServer server(port, host, backlog, maxConnections, handshakeTimeoutSecs, addressFamily, pingIntervalSeconds);
 ```
 
 ## HTTP client API
